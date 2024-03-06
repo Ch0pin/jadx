@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import jadx.api.JavaClass;
 import jadx.api.JavaField;
 import jadx.api.metadata.annotations.VarNode;

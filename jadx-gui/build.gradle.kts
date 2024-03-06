@@ -7,6 +7,7 @@ plugins {
 }
 
 dependencies {
+	implementation("com.github.weisj:jsvg:1.4.0")
 	implementation(project(":jadx-core"))
 	implementation(project(":jadx-cli"))
 	implementation(project(":jadx-plugins-tools"))

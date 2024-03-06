@@ -76,6 +76,8 @@ public enum ActionModel {
 
 	FIND_USAGE(CODE_AREA, "popup.find_usage", "popup.find_usage", null,
 			Shortcut.keyboard(KeyEvent.VK_X)),
+	FIND_DIRECT_SUBCLASSES(CODE_AREA, "popup.find_direct_subclasses", "popup.find_direct_subclasses", null,
+			Shortcut.keyboard(KeyEvent.VK_S)),
 	GOTO_DECLARATION(CODE_AREA, "popup.go_to_declaration", "popup.go_to_declaration", null,
 			Shortcut.keyboard(KeyEvent.VK_D)),
 	CODE_COMMENT(CODE_AREA, "popup.add_comment", "popup.add_comment", null,
