@@ -54,6 +54,8 @@ import jadx.core.dex.visitors.debuginfo.DebugInfoApplyVisitor;
 import jadx.core.dex.visitors.debuginfo.DebugInfoAttachVisitor;
 import jadx.core.dex.visitors.finaly.MarkFinallyVisitor;
 import jadx.core.dex.visitors.kotlin.ProcessKotlinInternals;
+import jadx.core.dex.visitors.prepare.AddAndroidConstants;
+import jadx.core.dex.visitors.prepare.CollectConstValues;
 import jadx.core.dex.visitors.regions.CheckRegions;
 import jadx.core.dex.visitors.regions.CleanRegions;
 import jadx.core.dex.visitors.regions.IfRegionVisitor;
@@ -96,6 +98,8 @@ public class Jadx {
 		List<IDexTreeVisitor> passes = new ArrayList<>();
 		passes.add(new SignatureProcessor());
 		passes.add(new OverrideMethodVisitor());
+		passes.add(new AddAndroidConstants());
+		passes.add(new CollectConstValues());
 
 		// rename and deobfuscation
 		passes.add(new DeobfuscatorVisitor());

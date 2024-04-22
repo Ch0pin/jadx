@@ -24,6 +24,7 @@ import jadx.core.codegen.json.cls.JsonClass;
 import jadx.core.codegen.json.cls.JsonCodeLine;
 import jadx.core.codegen.json.cls.JsonField;
 import jadx.core.codegen.json.cls.JsonMethod;
+import jadx.core.codegen.utils.CodeGenUtils;
 import jadx.core.dex.attributes.AFlag;
 import jadx.core.dex.info.ClassInfo;
 import jadx.core.dex.instructions.args.ArgType;
@@ -31,7 +32,6 @@ import jadx.core.dex.nodes.ClassNode;
 import jadx.core.dex.nodes.FieldNode;
 import jadx.core.dex.nodes.MethodNode;
 import jadx.core.dex.nodes.RootNode;
-import jadx.core.utils.CodeGenUtils;
 import jadx.core.utils.Utils;
 import jadx.core.utils.exceptions.JadxRuntimeException;
 
@@ -86,7 +86,7 @@ public class JsonCodeGen {
 			jsonCls.setInterfaces(Utils.collectionMap(cls.getInterfaces(), clsType -> getTypeAlias(classGen, clsType)));
 		}
 
-		ICodeWriter cw = new SimpleCodeWriter();
+		ICodeWriter cw = new SimpleCodeWriter(args);
 		CodeGenUtils.addErrorsAndComments(cw, cls);
 		classGen.addClassDeclaration(cw);
 		jsonCls.setDeclaration(cw.getCodeStr());
@@ -130,7 +130,7 @@ public class JsonCodeGen {
 				jsonField.setAlias(field.getAlias());
 			}
 
-			ICodeWriter cw = new SimpleCodeWriter();
+			ICodeWriter cw = new SimpleCodeWriter(args);
 			classGen.addField(cw, field);
 			jsonField.setDeclaration(cw.getCodeStr());
 			jsonField.setAccessFlags(field.getAccessFlags().rawValue());
@@ -154,7 +154,7 @@ public class JsonCodeGen {
 			jsonMth.setArguments(Utils.collectionMap(mth.getMethodInfo().getArgumentsTypes(), clsType -> getTypeAlias(classGen, clsType)));
 
 			MethodGen mthGen = new MethodGen(classGen, mth);
-			ICodeWriter cw = new AnnotatedCodeWriter();
+			ICodeWriter cw = new AnnotatedCodeWriter(args);
 			mthGen.addDefinition(cw);
 			jsonMth.setDeclaration(cw.getCodeStr());
 			jsonMth.setAccessFlags(mth.getAccessFlags().rawValue());
@@ -181,7 +181,7 @@ public class JsonCodeGen {
 			return Collections.emptyList();
 		}
 
-		String[] lines = codeStr.split(ICodeWriter.NL);
+		String[] lines = codeStr.split(args.getCodeNewLineStr());
 		Map<Integer, Integer> lineMapping = code.getCodeMetadata().getLineMapping();
 		ICodeMetadata metadata = code.getCodeMetadata();
 		long mthCodeOffset = mth.getMethodCodeOffset() + 16;
@@ -189,7 +189,7 @@ public class JsonCodeGen {
 		int linesCount = lines.length;
 		List<JsonCodeLine> codeLines = new ArrayList<>(linesCount);
 		int lineStartPos = 0;
-		int newLineLen = ICodeWriter.NL.length();
+		int newLineLen = args.getCodeNewLineStr().length();
 		for (int i = 0; i < linesCount; i++) {
 			String codeLine = lines[i];
 			int line = i + 2;
@@ -208,7 +208,7 @@ public class JsonCodeGen {
 	}
 
 	private String getTypeAlias(ClassGen classGen, ArgType clsType) {
-		ICodeWriter code = new SimpleCodeWriter();
+		ICodeWriter code = new SimpleCodeWriter(args);
 		classGen.useType(code, clsType);
 		return code.getCodeStr();
 	}
